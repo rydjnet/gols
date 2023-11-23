@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"syscall"
 )
 
 func dirRecurse(d string, indent int) {
@@ -23,6 +24,18 @@ func dirRecurse(d string, indent int) {
 	}
 }
 func main() {
-	dirRecurse("/tmp/", 0)
+	var path string
+	switch {
+	case len(os.Args) > 2:
+		log.Fatal("Error: too many arguments, use only one")
+
+	case len(os.Args) == 1:
+		path, _ = syscall.Getwd()
+
+	case len(os.Args) == 2:
+		path = os.Args[1]
+
+	}
+	dirRecurse(path, 0)
 
 }
